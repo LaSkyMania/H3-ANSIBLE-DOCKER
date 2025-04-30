@@ -12,7 +12,7 @@ DOCKER_REPO = 'build-image-docker'
                   }
                   stage('Checkout SCM') {
                       steps {
-git branch: 'main', url: 'https://github.com/medsrc/build-image-docker.git'
+git branch: 'main', url: 'https://github.com/LaSkyMania/H3-ANSIBLE-DOCKER.git'
                       }
                    }
                    stage('build') {
