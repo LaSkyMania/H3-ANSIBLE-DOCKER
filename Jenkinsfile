@@ -6,11 +6,6 @@ pipeline {
         deleteDir()
       }
     }
-    stage('Checkout SCM'){
-      steps {
-        'git clone https://github.com/LaSkyMania/H3-ANSIBLE-DOCKER.git'
-      }
-    }
     stage('Build image docker'){
       steps {
         script {
