@@ -1,28 +1,44 @@
-pipeline {
+pipeline{
   agent any
-  stages {
-    stage('Supprimer le workspace'){
-      steps {
+  environment{
+    IMG_NAME = 'med-nginx'
+    DOCKER_REPO = 'test'
+  }
+  
+  stages{
+    stage('clean up'){
+      steps{
         deleteDir()
       }
     }
-    stage('Build image docker'){
-      steps {
+
+    stage('Checkout SCM'){
+      steps{
+        git (
+          branch: 'main',
+          url: 'https://github.com/LaSkyMania/H3-ANSIBLE-DOCKER.git'
+        )
+      }
+    }
+    stage('Build'){
+      steps{
         script {
-          sh 'docker build -t myimage_nginx .'
-          sh 'docker tag myimage_nginx tbizet:myimage_nginx'
-          sh 'docker images'
+          sh "docker build -t ${IMG_NAME} ."
+          sh "docker tag ${IMG_NAME} ${DOCKER_REPO}:${IMG_NAME}"
         }
       }
     }
-    stage('Deploiement application'){
-      steps {
+
+    stage('deploiement conteneur'){
+      steps{
         script {
-          sh 'docker rm -f $(docker ps -aq) || true'
-          sh 'docker run -d --name monapp --hostname monapp -p 8099:80 myimage_nginx'
-          sh 'docker exec monapp "ifconfig"'
+          sh "docker stop monapp || true"
+          sh "docker rm monapp || true"
+          sh "docker run -d --name monapp --hostname monapp -p 8585:80 ${IMG_NAME}"
+          sh "docker exec monapp ifconfig"
         }
       }
     }
+
   }
 }
