@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Checkout SCM'){
       steps {
-        git credentialsId: 'id-user-github', url: 'https://github.com/LaSkyMania/H3-ANSIBLE-DOCKER.git'
+        'git clone https://github.com/LaSkyMania/H3-ANSIBLE-DOCKER.git'
       }
     }
     stage('Build image docker'){
